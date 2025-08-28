@@ -14,34 +14,33 @@
 
 
 
-
-    <EditText
-        android:id="@+id/serverIpInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="IP do Servidor (ex: 192.168.1.10)"
-        android:inputType="text"
-        android:text="192.168.1.10" />
-
-
-
     <TextView
         android:id="@+id/IpPlaceholderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Edite se necessário" />
+        android:text="Enviando para" />
+
+    ```
 
 
+    <EditText
+        android:id="@+id/serverIpInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="IP do Servidor (ex: 192.168.1.104)"
+        android:inputType="text"
+        android:text="192.168.1.10" />
 
     <ImageView
         android:id="@+id/previewImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="320dp"
+        android:layout_width="147dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="370dp"
+        android:background="#BBDEFB"
         android:scaleType="centerCrop"
-        android:src="@android:drawable/ic_menu_camera"
-        android:background="#FFFFFF" />
+        android:src="@drawable/fotona" />
 
     <TextView
         android:id="@+id/imagePlaceholderText"
