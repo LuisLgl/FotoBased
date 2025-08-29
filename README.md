@@ -43,3 +43,4 @@ Fluxo sugerido para teste:
 ![Tela do App](img/App.jpg)
 ![Servidor Aguardando foto](img/Server.png)
 ![Servidor Exibindo foto](img/Server_Photo.jpeg)
+<img src="img/App.jpg" width="30">
