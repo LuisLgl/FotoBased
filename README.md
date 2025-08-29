@@ -40,3 +40,6 @@ Fluxo sugerido para teste:
 4. Tire outra foto → a janela é atualizada novamente.
 
 ## Capturas de tela
+![Tela do App](img/App.jpg)
+![Servidor Aguardando foto](img/Server.png)
+![Servidor Exibindo foto](img/Server_Photo.jpeg)
