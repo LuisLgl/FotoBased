@@ -7,7 +7,7 @@ from PIL import Image, ImageTk #abri imagens e converter para exibir no Tkinter
 import tkinter as tk #cria a interface grafica
 
 HOST = '0.0.0.0'  # aceita conexoes em qualquer IP
-PORT = 5001 
+PORT = 5002 
 SAVE_DIR = "data" #onde salvar as fotos
 
 # fila usada para enviar o caminho da nova imagem para a GUI

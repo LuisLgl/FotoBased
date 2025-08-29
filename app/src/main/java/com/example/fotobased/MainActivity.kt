@@ -88,12 +88,13 @@ class MainActivity : AppCompatActivity() {
         val imageView = findViewById<ImageView>(R.id.previewImage)
         val textStatus = findViewById<TextView>(R.id.imagePlaceholderText)
         val ipInput = findViewById<EditText>(R.id.serverIpInput)
+        // 1. ADICIONADO: Pega a referência do novo campo da porta
+        val portInput = findViewById<EditText>(R.id.serverPortInput)
 
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             currentPhotoUri?.let { uri ->
                 try {
                     val inputStream = contentResolver.openInputStream(uri)
-                    // Usamos 'var' pois o bitmap pode ser substituído pela versão rotacionada
                     var originalBitmap = BitmapFactory.decodeStream(inputStream)
                     inputStream?.close()
 
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                         return
                     }
 
-                    // ================== NOVO: CORREÇÃO DE ORIENTAÇÃO ==================
+                    // ================== CORREÇÃO DE ORIENTAÇÃO ==================
                     val exifInputStream = contentResolver.openInputStream(uri)
                     val exifInterface = ExifInterface(exifInputStream!!)
                     val orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
@@ -124,13 +125,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     // ==================================================================
 
-                    Log.d("FOTO_DEBUG", "Dimensões originais (após rotação): ${originalBitmap.width} x ${originalBitmap.height}")
-
                     val scaledWidth = if (originalBitmap.width > 1280) 1280 else originalBitmap.width
                     val scaledHeight = (scaledWidth.toFloat() / originalBitmap.width * originalBitmap.height).toInt()
                     val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, scaledWidth, scaledHeight, true)
-
-                    Log.d("FOTO_DEBUG", "Dimensões finais: ${scaledBitmap.width} x ${scaledBitmap.height}")
 
                     imageView.setImageBitmap(scaledBitmap)
 
@@ -138,7 +135,17 @@ class MainActivity : AppCompatActivity() {
                     scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
                     val photoBytes = stream.toByteArray()
 
-                    sendPhoto(ipInput.text.toString(), 5001, photoBytes, textStatus)
+                    // 2. MODIFICADO: Lê o valor da porta e o utiliza na função
+                    val ipStr = ipInput.text.toString()
+                    val portStr = portInput.text.toString()
+
+                    if (ipStr.isNotEmpty() && portStr.isNotEmpty()) {
+                        val portInt = portStr.toInt()
+                        sendPhoto(ipStr, portInt, photoBytes, textStatus)
+                    } else {
+                        Toast.makeText(this, "Preencha o IP e a Porta", Toast.LENGTH_SHORT).show()
+                        textStatus.text = "Falha: IP ou Porta não preenchidos."
+                    }
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -150,7 +157,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendPhoto(ip: String, port: Int, photo: ByteArray, statusView: TextView) {
         thread {
+            // 1. ADICIONADO: Atualiza o status para "Enviando" ANTES de começar.
+            runOnUiThread { statusView.text = "Enviando, aguarde..." }
+
             try {
+                // 2. A operação de rede demorada acontece aqui...
                 Socket(ip, port).use { socket ->
                     val out = socket.getOutputStream()
                     val sizeBytes = ByteBuffer.allocate(4).putInt(photo.size).array()
@@ -158,9 +169,11 @@ class MainActivity : AppCompatActivity() {
                     out.write(photo)
                     out.flush()
                 }
+                // 3. O status é atualizado para "sucesso" APÓS o fim da operação.
                 runOnUiThread { statusView.text = "Foto enviada com sucesso!" }
             } catch (e: Exception) {
                 e.printStackTrace()
+                // 3. Ou o status é atualizado para "erro" se algo falhar.
                 runOnUiThread { statusView.text = "Erro ao enviar: ${e.message}" }
             }
         }

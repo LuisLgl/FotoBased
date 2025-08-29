@@ -17,22 +17,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Enviando para"
+        android:text="Endereco do Receptor"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:shadowColor="#000000"
+        android:textSize="14sp"  android:shadowColor="#000000"
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="2" />
 
     <EditText
         android:id="@+id/serverIpInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"  android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="IP do Servidor (ex: 192.168.1.104)"
         android:inputType="text"
         android:text="192.168.1.104"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCCCCC"
+        android:backgroundTint="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/serverPortInput"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Porta (ex: 8080)"
+        android:inputType="number"
+        android:text="5001"
         android:textColor="#FFFFFF"
         android:textColorHint="#CCCCCC"
         android:backgroundTint="#FFFFFF" />
